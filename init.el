@@ -46,6 +46,16 @@
 
 (elpaca elpaca-use-package
   (elpaca-use-package-mode 1))
+;;; Evil
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-delete t)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (setq evil-symbol-word-search t)
+  (evil-mode 1))
 ;;; Organizer
 (use-package outline
   :ensure nil
