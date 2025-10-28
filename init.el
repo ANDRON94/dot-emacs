@@ -56,6 +56,12 @@
   :config
   (setq evil-symbol-word-search t)
   (evil-mode 1))
+
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init '(elpaca)))
 ;;; Organizer
 (use-package outline
   :ensure nil
