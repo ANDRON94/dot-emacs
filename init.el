@@ -62,6 +62,11 @@
   :after evil
   :config
   (evil-collection-init '(elpaca)))
+;;; UI/UX
+(use-package which-key
+  :ensure nil
+  :config
+  (which-key-mode 1))
 ;;; Organizer
 (use-package outline
   :ensure nil
