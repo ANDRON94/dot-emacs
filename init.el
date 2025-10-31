@@ -1,5 +1,55 @@
 ;; -*- lexical-binding: t; -*-
 
+;;; My
+;;;; Key Bindings
+(defvar my-leader-key "SPC"
+  "The leader prefix key.")
+
+(defvar my-leader-alt-key "M-SPC"
+  "An alternative leader prefix key, used for Insert and Emacs states.")
+
+(defvar my--leader-key-states '(normal visual motion))
+
+(defvar my--leader-alt-key-states '(emacs insert))
+;;;;; Global
+(defvar-keymap my-buffer-map
+  :doc "Keymap for operations on buffers: switch, close, revert, etc."
+  "b" #'switch-to-buffer
+  "d" #'kill-current-buffer
+  "i" #'ibuffer
+  "n" #'next-buffer
+  "p" #'previous-buffer
+  "r" #'revert-buffer)
+
+(defvar-keymap my-file-map
+  :doc "Keymap for operations on files: open file, open directory, open recently closed file, etc."
+  "d" #'dired
+  "f" #'find-file
+  "r" #'recentf)
+
+(defvar-keymap my-window-maximize-map
+  :doc "Keymap for maximizing windows: full, horizontal, vertical, etc."
+  "m" #'delete-other-windows
+  "s" #'ignore
+  "v" #'ignore)
+
+(defvar-keymap my-window-map
+  :doc "Keymap for operations on windows: switch, close, split, etc."
+  "d" #'evil-window-delete
+  "h" #'evil-window-left
+  "j" #'evil-window-down
+  "k" #'evil-window-up
+  "l" #'evil-window-right
+  "m" `("maximize" . ,my-window-maximize-map)
+  "s" #'evil-window-split
+  "v" #'evil-window-vsplit)
+
+(defvar-keymap my-leader-map
+  :doc "Root keymap for all user-defined key bindings."
+  ":" `("M-x" . ,#'execute-extended-command)
+  "b" `("buffer" . ,my-buffer-map)
+  "f" `("file" . ,my-file-map)
+  "w" `("window" . ,my-window-map))
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
@@ -55,7 +105,12 @@
   (setq evil-want-C-u-scroll t)
   :config
   (setq evil-symbol-word-search t)
-  (evil-mode 1))
+  (evil-mode 1)
+  ;; Leader
+  (evil-define-key my--leader-key-states 'global
+    (kbd my-leader-key) my-leader-map)
+  (evil-define-key my--leader-alt-key-states 'global
+    (kbd my-leader-alt-key) my-leader-map))
 
 (use-package evil-collection
   :ensure t
