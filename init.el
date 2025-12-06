@@ -204,6 +204,9 @@ autoloads/loaddefs, etc.")
 ;; especially with SPC as our default leader key.
 (keymap-set y-or-n-p-map "SPC" nil)
 
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode 1)
+
 (use-package transient
   :ensure t
   :init
