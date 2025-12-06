@@ -274,6 +274,15 @@ autoloads/loaddefs, etc.")
 (setq auto-save-include-big-deletions t)
 (setq auto-save-list-file-prefix (my-var "auto-save/"))
 (setq tramp-auto-save-directory  (my-var "tramp/auto-save/"))
+
+(use-package recentf
+  :ensure nil
+  :config
+  (make-directory (my-var "recentf/") t)
+  (setq recentf-auto-cleanup (if (daemonp) 300 'never))
+  (setq recentf-save-file (my-var "recentf/history.el"))
+  (add-to-list 'recentf-filename-handlers #'substring-no-properties)
+  (add-hook 'kill-emacs-hook #'recentf-cleanup))
 ;;; Organizer
 (use-package outline
   :ensure nil
