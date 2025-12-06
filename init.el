@@ -258,6 +258,7 @@ autoloads/loaddefs, etc.")
 ;;; Editing
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq-default fill-column 88)
 ;;; Organizer
 (use-package outline
   :ensure nil
