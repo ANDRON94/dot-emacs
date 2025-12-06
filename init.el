@@ -218,6 +218,8 @@ autoloads/loaddefs, etc.")
 
 (global-hl-line-mode 1)
 
+(put 'narrow-to-region 'disabled nil)
+
 (use-package transient
   :ensure t
   :init
