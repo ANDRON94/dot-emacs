@@ -138,6 +138,7 @@ autoloads/loaddefs, etc.")
 
 (defvar-keymap my-leader-map
   :doc "Root keymap for all user-defined key bindings."
+  "'" #'vertico-repeat
   ":" `("M-x" . ,#'execute-extended-command)
   "b" `("buffer" . ,my-buffer-map)
   "f" `("file" . ,my-file-map)
@@ -193,6 +194,8 @@ autoloads/loaddefs, etc.")
 
 (elpaca elpaca-use-package
   (elpaca-use-package-mode 1))
+
+(setq use-package-hook-name-suffix nil)
 ;;; Evil
 (use-package evil
   :ensure t
@@ -250,6 +253,13 @@ autoloads/loaddefs, etc.")
   (setq transient-history-file (my-var "transient/history.el"))
   (setq transient-levels-file (my-var "transient/levels.el"))
   (setq transient-values-file (my-var "transient/values.el")))
+
+(use-package vertico
+  :ensure t
+  :hook (minibuffer-setup-hook . vertico-repeat-save)
+  :init
+  (setq vertico-cycle t)
+  (vertico-mode 1))
 
 (use-package which-key
   :ensure nil
