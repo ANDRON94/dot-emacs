@@ -1,6 +1,49 @@
 ;; -*- lexical-binding: t; -*-
 
 ;;; My
+;;;; Lisp
+(defvar my-lisp-dir (locate-user-emacs-file "lisp/")
+  "Where I store my libraries.")
+
+(defvar my-var-dir (locate-user-emacs-file "var/")
+  "Where I store my global state files.
+
+State files contain unessential, non-portable, but persistent data which, if
+lost won't cause breakage, but may be inconvenient as they cannot be
+automatically regenerated or restored. For example, a recently-opened file list
+is not essential, but losing it means losing this record, and restoring it
+requires revisiting all those files.
+
+Use this for: history, logs, user-saved data, autosaves/backup files, known
+projects, recent files, bookmarks.")
+
+(defvar my-cache-dir (expand-file-name "cache/" my-var-dir)
+  "Where I store my global cache files.
+
+Cache files represent unessential data that shouldn't be problematic when
+deleted (besides, perhaps, a one-time performance hit), lack portability (and so
+shouldn't be copied to other systems/configs), and are regenerated when needed,
+without user input.
+
+Some examples: images/data caches, elisp bytecode, natively compiled elisp,
+session files, ELPA archives, authinfo files, org-persist, etc.")
+
+(defvar my-etc-dir (locate-user-emacs-file "etc/")
+  "Where I store my global data files.
+
+Data files contain shared and long-lived data that Emacs, and their
+packages require to function correctly or at all. Deleting them by hand will
+cause breakage, and require user intervention (e.g. reinstall packages)
+to restore.
+
+Use this for: server binaries, package source, pulled module libraries,
+autoloads/loaddefs, etc.")
+
+(defun my-var (name)
+  (expand-file-name name my-var-dir))
+
+(defun my-etc (name)
+  (expand-file-name name my-etc-dir))
 ;;;; Key Bindings
 (defvar my-leader-key "SPC"
   "The leader prefix key.")
@@ -63,7 +106,7 @@
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
-(defvar elpaca-directory (expand-file-name "elpaca/" (locate-user-emacs-file "etc/")))
+(defvar elpaca-directory (my-etc "elpaca/"))
 
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 
