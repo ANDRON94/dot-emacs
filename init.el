@@ -259,6 +259,8 @@ autoloads/loaddefs, etc.")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default fill-column 88)
+(setq-default truncate-lines t)
+(setq truncate-partial-width-windows nil)
 ;;; Organizer
 (use-package outline
   :ensure nil
