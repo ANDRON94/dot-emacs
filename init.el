@@ -196,6 +196,8 @@ autoloads/loaddefs, etc.")
 
 (setq column-number-mode t)
 
+(setq ring-bell-function #'ignore)
+
 (use-package transient
   :ensure t
   :init
