@@ -216,6 +216,8 @@ autoloads/loaddefs, etc.")
 (setq whitespace-line-column nil)
 (global-whitespace-mode 1)
 
+(global-hl-line-mode 1)
+
 (use-package transient
   :ensure t
   :init
