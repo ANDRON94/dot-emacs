@@ -197,6 +197,9 @@ autoloads/loaddefs, etc.")
 
 (setq use-package-hook-name-suffix nil)
 ;;; Evil
+(defvar my--evil-mode-line-tag-placeholder ""
+  "No-op variable just to place `evil-mode-line-tag' in the mode line.")
+
 (use-package evil
   :ensure t
   :init
@@ -205,6 +208,7 @@ autoloads/loaddefs, etc.")
   (setq evil-want-C-u-scroll t)
   :config
   (setq evil-symbol-word-search t)
+  (setq evil-mode-line-format '(after . my--evil-mode-line-tag-placeholder))
   (evil-mode 1)
   ;; Leader
   (evil-define-key my--leader-key-states 'global
@@ -224,8 +228,6 @@ autoloads/loaddefs, etc.")
 (tool-bar-mode -1)
 
 (blink-cursor-mode -1)
-
-(setq column-number-mode t)
 
 (setq ring-bell-function #'ignore)
 
@@ -265,6 +267,54 @@ autoloads/loaddefs, etc.")
   :ensure nil
   :config
   (which-key-mode 1))
+;;;; Mode Line
+(defsubst my--column-number-at-pos (&optional pos)
+  (if pos
+      (save-excursion
+        (goto-char pos)
+        (current-column))
+    (current-column)))
+
+(defun my--mode-line-region-info ()
+  (when (and (or mark-active (and (bound-and-true-p evil-local-mode)
+                                  (eq evil-state 'visual)))
+             (mode-line-window-selected-p))
+    (cl-destructuring-bind (beg . end)
+        (if (and (bound-and-true-p evil-local-mode) (eq evil-state 'visual))
+            (cons evil-visual-beginning evil-visual-end)
+          (cons (region-beginning) (region-end)))
+      (let ((lines (count-lines beg (min end (point-max)))))
+        (cond ((or (bound-and-true-p rectangle-mark-mode)
+                   (and (bound-and-true-p evil-visual-selection)
+                        (eq 'block evil-visual-selection)))
+               (let ((cols (abs (- (my--column-number-at-pos end)
+                                   (my--column-number-at-pos beg)))))
+                 (format " %dx%dB" lines cols)))
+              ((and (bound-and-true-p evil-visual-selection)
+                    (eq evil-visual-selection 'line))
+               (format " %dL" lines))
+              (t
+               (format " %dC" (- end beg))))))))
+
+(defun my--mode-line-macro-recording ()
+  (when (and (or defining-kbd-macro executing-kbd-macro)
+             (mode-line-window-selected-p))
+    (if (bound-and-true-p evil-this-macro)
+        (format " M(%c)" evil-this-macro)
+      " M()")))
+
+(setq column-number-mode t)
+
+(setq-default mode-line-format
+              '(;; Errors
+                "%e "
+                ;; State
+                "%+" my--evil-mode-line-tag-placeholder "%n"
+                (:eval (my--mode-line-macro-recording))
+                (:eval (my--mode-line-region-info))
+                ;; Info
+                " %o %l:%c %b "
+                (:eval (symbol-name major-mode))))
 ;;; Editing
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
