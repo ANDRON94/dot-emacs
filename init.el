@@ -214,7 +214,10 @@ autoloads/loaddefs, etc.")
   (evil-define-key my--leader-key-states 'global
     (kbd my-leader-key) my-leader-map)
   (evil-define-key my--leader-alt-key-states 'global
-    (kbd my-leader-alt-key) my-leader-map))
+    (kbd my-leader-alt-key) my-leader-map)
+  ;; Rest
+  (evil-define-key my--leader-key-states 'global
+    (kbd "s") #'evil-avy-goto-char-2))
 
 (use-package evil-collection
   :ensure t
@@ -329,6 +332,12 @@ autoloads/loaddefs, etc.")
 (setq-default fill-column 88)
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil)
+;;; Navigation
+(use-package avy
+  :ensure t
+  :config
+  (setq avy-background t)
+  (setq avy-single-candidate-jump nil))
 ;;; Saving
 (setq create-lockfiles nil)
 (setq make-backup-files nil)
