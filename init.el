@@ -194,6 +194,8 @@ autoloads/loaddefs, etc.")
 
 (blink-cursor-mode -1)
 
+(setq column-number-mode t)
+
 (use-package transient
   :ensure t
   :init
