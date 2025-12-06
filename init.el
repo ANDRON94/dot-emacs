@@ -268,6 +268,14 @@ autoloads/loaddefs, etc.")
   :config
   (which-key-mode 1))
 ;;;; Mode Line
+(use-package evil-anzu
+  :ensure t
+  :config
+  (set-face-attribute 'anzu-mode-line nil
+                      :foreground "black"
+                      :weight 'normal)
+  (global-anzu-mode 1))
+
 (defsubst my--column-number-at-pos (&optional pos)
   (if pos
       (save-excursion
