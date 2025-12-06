@@ -261,6 +261,14 @@ autoloads/loaddefs, etc.")
 (setq-default fill-column 88)
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil)
+;;; Saving
+(setq create-lockfiles nil)
+(setq make-backup-files nil)
+(setq version-control t)
+(setq backup-by-copying t)
+(setq delete-old-versions t)
+(setq backup-directory-alist `(("." . ,(my-var "backup/"))))
+(setq tramp-backup-directory-alist backup-directory-alist)
 ;;; Organizer
 (use-package outline
   :ensure nil
