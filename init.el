@@ -188,6 +188,10 @@ autoloads/loaddefs, etc.")
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
   (evil-collection-init '(elpaca magit)))
 ;;; UI/UX
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
 (use-package transient
   :ensure t
   :init
