@@ -70,6 +70,21 @@ autoloads/loaddefs, etc.")
   "f" #'find-file
   "r" #'recentf)
 
+(defvar-keymap my-git-find-map
+  :doc "Keymap for finding files with git (looking into history)."
+  "f" #'magit-find-file)
+
+(defvar-keymap my-git-map
+  :doc "Keymap for working with git: status, blame, revert, log, etc."
+  "B" #'magit-blame-addition
+  "C" #'magit-clone
+  "L" #'magit-log-buffer-file
+  "[" #'diff-hl-previous-hunk
+  "]" #'diff-hl-next-hunk
+  "f" `("find" . ,my-git-find-map)
+  "g" #'magit-status
+  "r" #'diff-hl-revert-hunk)
+
 (defvar-keymap my-help-bindings-map
   :doc "Keymap to get help for various key bindings."
   "b" #'describe-bindings)
@@ -101,6 +116,7 @@ autoloads/loaddefs, etc.")
   ":" `("M-x" . ,#'execute-extended-command)
   "b" `("buffer" . ,my-buffer-map)
   "f" `("file" . ,my-file-map)
+  "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
   "w" `("window" . ,my-window-map))
 ;;; Elpaca
@@ -169,8 +185,16 @@ autoloads/loaddefs, etc.")
   :ensure t
   :after evil
   :config
-  (evil-collection-init '(elpaca)))
+  (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
+  (evil-collection-init '(elpaca magit)))
 ;;; UI/UX
+(use-package transient
+  :ensure t
+  :init
+  (setq transient-history-file (my-var "transient/history.el"))
+  (setq transient-levels-file (my-var "transient/levels.el"))
+  (setq transient-values-file (my-var "transient/values.el")))
+
 (use-package which-key
   :ensure nil
   :config
@@ -180,6 +204,19 @@ autoloads/loaddefs, etc.")
   :ensure nil
   :config
   (setq outline-minor-mode-cycle t))
+;;; Git
+(use-package diff-hl
+  :ensure t
+  :config
+  (global-diff-hl-mode 1))
+
+(use-package magit
+  :ensure t
+  :after transient
+  :bind (:map magit-mode-map
+              ("SPC" . nil)
+              :map magit-diff-mode-map
+              ("SPC" . nil)))
 ;;; Footer
 ;; Local Variables:
 ;; eval: (outline-minor-mode 1)
