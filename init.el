@@ -255,6 +255,9 @@ autoloads/loaddefs, etc.")
   :ensure nil
   :config
   (which-key-mode 1))
+;;; Editing
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 ;;; Organizer
 (use-package outline
   :ensure nil
