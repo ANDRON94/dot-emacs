@@ -198,6 +198,12 @@ autoloads/loaddefs, etc.")
 
 (setq ring-bell-function #'ignore)
 
+(setq use-short-answers t)
+;; NOTE: By default, SPC = yes when `y-or-n-p' prompts you (and
+;; `y-or-n-p-use-read-key' is off). This seems too easy to hit by accident,
+;; especially with SPC as our default leader key.
+(keymap-set y-or-n-p-map "SPC" nil)
+
 (use-package transient
   :ensure t
   :init
