@@ -27,6 +27,15 @@
   "f" #'find-file
   "r" #'recentf)
 
+(defvar-keymap my-help-bindings-map
+  :doc "Keymap to get help for various key bindings."
+  "b" #'describe-bindings)
+
+(defvar-keymap my-help-map
+  :doc "Keymap to get help regarding functions, variables, key bindings, etc."
+  :keymap help-map
+  "b" `("bindings" . ,my-help-bindings-map))
+
 (defvar-keymap my-window-maximize-map
   :doc "Keymap for maximizing windows: full, horizontal, vertical, etc."
   "m" #'delete-other-windows
@@ -49,6 +58,7 @@
   ":" `("M-x" . ,#'execute-extended-command)
   "b" `("buffer" . ,my-buffer-map)
   "f" `("file" . ,my-file-map)
+  "h" `("help" . ,my-help-map)
   "w" `("window" . ,my-window-map))
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
