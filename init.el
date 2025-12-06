@@ -190,7 +190,7 @@ autoloads/loaddefs, etc.")
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(elpaca magit)))
+  (evil-collection-init '(elpaca ibuffer magit outline)))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
