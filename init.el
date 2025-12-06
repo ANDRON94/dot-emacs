@@ -98,6 +98,27 @@ autoloads/loaddefs, etc.")
   :keymap help-map
   "b" `("bindings" . ,my-help-bindings-map))
 
+(defvar-keymap my-insert-map
+  :doc "Keymap for inserting things into buffer."
+  "y" #'yank-from-kill-ring)
+
+(defvar-keymap my-register-map
+  :doc "Keymap for operations on registers: create, jump, etc."
+  "SPC" #'point-to-register
+  "b" #'bookmark-jump
+  "i" #'insert-register
+  "j" #'jump-to-register
+  "m" #'bookmark-set
+  "n" #'number-to-register
+  "s" #'copy-to-register
+  "w" #'window-configuration-to-register)
+
+(defvar-keymap my-toggle-map
+  :doc "Keymap for toggling things on and off."
+  "c" #'global-display-fill-column-indicator-mode
+  "r" #'read-only-mode
+  "w" #'visual-line-mode)
+
 (defvar-keymap my-window-maximize-map
   :doc "Keymap for maximizing windows: full, horizontal, vertical, etc."
   "m" #'delete-other-windows
@@ -122,6 +143,9 @@ autoloads/loaddefs, etc.")
   "f" `("file" . ,my-file-map)
   "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
+  "i" `("insert" . ,my-insert-map)
+  "r" `("register" . ,my-register-map)
+  "t" `("toggle" . ,my-toggle-map)
   "w" `("window" . ,my-window-map))
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
