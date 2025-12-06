@@ -269,6 +269,11 @@ autoloads/loaddefs, etc.")
 (setq delete-old-versions t)
 (setq backup-directory-alist `(("." . ,(my-var "backup/"))))
 (setq tramp-backup-directory-alist backup-directory-alist)
+
+(setq auto-save-default t)
+(setq auto-save-include-big-deletions t)
+(setq auto-save-list-file-prefix (my-var "auto-save/"))
+(setq tramp-auto-save-directory  (my-var "tramp/auto-save/"))
 ;;; Organizer
 (use-package outline
   :ensure nil
