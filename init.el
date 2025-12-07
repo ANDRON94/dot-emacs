@@ -100,7 +100,8 @@ autoloads/loaddefs, etc.")
 
 (defvar-keymap my-insert-map
   :doc "Keymap for inserting things into buffer."
-  "y" #'yank-from-kill-ring)
+  "y" #'yank-from-kill-ring
+  "r" #'consult-register)
 
 (defvar-keymap my-register-map
   :doc "Keymap for operations on registers: create, jump, etc."
@@ -112,6 +113,16 @@ autoloads/loaddefs, etc.")
   "n" #'number-to-register
   "s" #'copy-to-register
   "w" #'window-configuration-to-register)
+
+(defvar-keymap my-search-map
+  :doc "Keymap for in buffer (and more) searching."
+  "B" #'consult-line-multi
+  "I" #'consult-imenu-multi
+  "S" #'my-consult-line-thing-at-point
+  "d" #'consult-ripgrep
+  "f" #'consult-fd
+  "i" #'consult-imenu
+  "s" #'consult-line)
 
 (defvar-keymap my-toggle-map
   :doc "Keymap for toggling things on and off."
@@ -139,13 +150,19 @@ autoloads/loaddefs, etc.")
 (defvar-keymap my-leader-map
   :doc "Root keymap for all user-defined key bindings."
   "'" #'vertico-repeat
+  "*" #'my-consult-ripgrep-thing-at-point
+  "." #'find-file
+  "/" #'consult-ripgrep
   ":" `("M-x" . ,#'execute-extended-command)
+  "<" #'consult-buffer
+  "RET" #'consult-bookmark
   "b" `("buffer" . ,my-buffer-map)
   "f" `("file" . ,my-file-map)
   "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
   "i" `("insert" . ,my-insert-map)
   "r" `("register" . ,my-register-map)
+  "s" `("search" . ,my-search-map)
   "t" `("toggle" . ,my-toggle-map)
   "w" `("window" . ,my-window-map))
 ;;; Elpaca
@@ -343,6 +360,18 @@ autoloads/loaddefs, etc.")
   :ensure nil
   :config
   (setq bookmark-default-file (my-var "bookmarks")))
+
+(use-package consult
+  :ensure t
+  :config
+  (defalias 'my-consult-line-thing-at-point #'consult-line)
+  (consult-customize
+   my-consult-line-thing-at-point
+   :initial (thing-at-point 'symbol))
+  (defalias 'my-consult-ripgrep-thing-at-point #'consult-ripgrep)
+  (consult-customize
+   my-consult-ripgrep-thing-at-point
+   :initial (thing-at-point 'symbol)))
 ;;; Saving
 (setq create-lockfiles nil)
 (setq make-backup-files nil)
