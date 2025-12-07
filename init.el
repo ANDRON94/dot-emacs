@@ -338,6 +338,11 @@ autoloads/loaddefs, etc.")
   :config
   (setq avy-background t)
   (setq avy-single-candidate-jump nil))
+
+(use-package bookmark
+  :ensure nil
+  :config
+  (setq bookmark-default-file (my-var "bookmarks")))
 ;;; Saving
 (setq create-lockfiles nil)
 (setq make-backup-files nil)
