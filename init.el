@@ -234,6 +234,7 @@ autoloads/loaddefs, etc.")
     (kbd my-leader-alt-key) my-leader-map)
   ;; Rest
   (evil-define-key my--leader-key-states 'global
+    (kbd "g D") #'xref-find-references
     (kbd "s") #'evil-avy-goto-char-2
     (kbd "z N") #'widen
     (kbd "z n") #'narrow-to-region))
@@ -243,7 +244,7 @@ autoloads/loaddefs, etc.")
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(elpaca ibuffer magit outline)))
+  (evil-collection-init '(elpaca ibuffer magit outline xref)))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -374,6 +375,13 @@ autoloads/loaddefs, etc.")
   (consult-customize
    my-consult-ripgrep-thing-at-point
    :initial (thing-at-point 'symbol)))
+
+(use-package xref
+  :ensure nil
+  :config
+  (setq xref-prompt-for-identifier nil)
+  (setq xref-show-xrefs-function #'consult-xref)
+  (setq xref-show-definitions-function #'consult-xref))
 ;;; Saving
 (setq create-lockfiles nil)
 (setq make-backup-files nil)
