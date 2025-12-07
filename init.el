@@ -272,6 +272,13 @@ autoloads/loaddefs, etc.")
 
 (put 'narrow-to-region 'disabled nil)
 
+(use-package orderless
+  :ensure t
+  :config
+  (setq completion-styles '(orderless basic))
+  (setq completion-category-overrides
+        '((file (styles basic orderless partial-completion)))))
+
 (use-package transient
   :ensure t
   :init
