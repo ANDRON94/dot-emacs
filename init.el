@@ -234,7 +234,9 @@ autoloads/loaddefs, etc.")
     (kbd my-leader-alt-key) my-leader-map)
   ;; Rest
   (evil-define-key my--leader-key-states 'global
-    (kbd "s") #'evil-avy-goto-char-2))
+    (kbd "s") #'evil-avy-goto-char-2
+    (kbd "z N") #'widen
+    (kbd "z n") #'narrow-to-region))
 
 (use-package evil-collection
   :ensure t
