@@ -418,6 +418,7 @@ autoloads/loaddefs, etc.")
 (use-package magit
   :ensure t
   :after transient
+  :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   :bind (:map magit-mode-map
               ("SPC" . nil)
               :map magit-diff-mode-map
