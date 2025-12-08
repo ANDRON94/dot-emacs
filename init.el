@@ -44,6 +44,37 @@ autoloads/loaddefs, etc.")
 
 (defun my-etc (name)
   (expand-file-name name my-etc-dir))
+
+(defmacro my-with-advice (symbol how function props &rest body)
+  "Evaluate BODY with advice FUNCTION added to a function named SYMBOL.
+
+See `advice-add' and `advice-remove' for more details regarding advices.
+See `unwind-protect' for more details regarding safe code evaluation."
+  (declare (indent 4) (debug t))
+  (let ((sym (gensym "symbol"))
+        (func (gensym "function")))
+    `(let ((,sym ,symbol)
+           (,func ,function))
+       (unwind-protect
+           (progn
+             (advice-add ,sym ,how ,func ,props)
+             ,@body)
+           (advice-remove ,sym ,func)))))
+
+(defun buffer-local-value-with-project-dir-override (oldfun variable buffer)
+  "FIXME: Make functions respect `project-current-directory-override'.
+
+Functions that search for buffers belonging to particular project are usually relying
+on `default-directory' value. But `project' also defines
+`project-current-directory-override' variable that should be respected as well.
+By advicing `buffer-local-value' function with this definition we can achieve
+desired behavior.
+Ideally, it should be reported to Emacs developers."
+  (if-let (((eq variable 'default-directory))
+           (directory-override
+            (funcall oldfun 'project-current-directory-override buffer)))
+      directory-override
+    (funcall oldfun variable buffer)))
 ;;;; Key Bindings
 (defvar my-leader-key "SPC"
   "The leader prefix key.")
@@ -99,6 +130,18 @@ autoloads/loaddefs, etc.")
   "y" #'yank-from-kill-ring
   "r" #'consult-register)
 
+(defvar-keymap my-project-map
+  :doc "Keymap for operations on projects: switch, open buffer, open file, etc."
+  "!" #'project-shell-command
+  "&" #'project-async-shell-command
+  "C" #'project-recompile
+  "b" #'project-switch-to-buffer
+  "c" #'project-compile
+  "f" #'project-find-file
+  "k" #'project-kill-buffers
+  "o" #'find-sibling-file
+  "p" #'project-switch-project)
+
 (defvar-keymap my-register-map
   :doc "Keymap for operations on registers: create, jump, etc."
   "SPC" #'point-to-register
@@ -147,6 +190,7 @@ autoloads/loaddefs, etc.")
   :doc "Root keymap for all user-defined key bindings."
   "'" #'vertico-repeat
   "*" #'my-consult-ripgrep-thing-at-point
+  "," #'consult-project-buffer
   "." #'find-file
   "/" #'consult-ripgrep
   ":" `("M-x" . ,#'execute-extended-command)
@@ -157,6 +201,7 @@ autoloads/loaddefs, etc.")
   "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
   "i" `("insert" . ,my-insert-map)
+  "p" `("project" . ,my-project-map)
   "r" `("register" . ,my-register-map)
   "s" `("search" . ,my-search-map)
   "t" `("toggle" . ,my-toggle-map)
@@ -373,7 +418,8 @@ autoloads/loaddefs, etc.")
                 (:eval (my--mode-line-region-info))
                 ;; Info
                 " %o %l:%c %b "
-                (:eval (symbol-name major-mode))))
+                (:eval (symbol-name major-mode))
+                (project-mode-line project-mode-line-format)))
 ;;; Editing
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -395,6 +441,16 @@ autoloads/loaddefs, etc.")
 (use-package consult
   :ensure t
   :config
+  (consult-customize
+   consult--source-project-buffer
+   :items
+   (lambda ()
+     (when-let (root (consult--project-root))
+       (my-with-advice 'buffer-local-value
+                       :around #'buffer-local-value-with-project-dir-override nil
+                       (consult--buffer-query :sort 'visibility
+                                              :directory root
+                                              :as #'consult--buffer-pair)))))
   (defalias 'my-consult-line-thing-at-point #'consult-line)
   (consult-customize
    my-consult-line-thing-at-point
@@ -432,6 +488,24 @@ autoloads/loaddefs, etc.")
   (setq recentf-save-file (my-var "recentf/history.el"))
   (add-to-list 'recentf-filename-handlers #'substring-no-properties)
   (add-hook 'kill-emacs-hook #'recentf-cleanup))
+;;; Project
+(defun my--set-project-current-directory-override ()
+  (setq-local project-current-directory-override default-directory))
+
+(cl-defmethod project-buffers :around (project)
+  "FIXME: Make `project-buffers' respect `project-current-directory-override'."
+  (my-with-advice 'buffer-local-value
+      :around #'buffer-local-value-with-project-dir-override nil
+    (cl-call-next-method)))
+
+(use-package project
+  :ensure nil
+  :init
+  (setq project-list-file (my-var "projects"))
+  :config
+  (advice-add 'project-eshell :after #'my--set-project-current-directory-override)
+  (setq project-switch-commands 'project-find-file)
+  (setq project-mode-line t))
 ;;; Organizer
 (use-package outline
   :ensure nil
