@@ -554,6 +554,12 @@ and Emacs states.")
    my-consult-ripgrep-thing-at-point
    :initial (thing-at-point 'symbol)))
 
+(use-package dumb-jump
+  :ensure t
+  :hook (xref-backend-functions . dumb-jump-xref-activate)
+  :config
+  (setq dumb-jump-force-searcher 'rg))
+
 (use-package xref
   :ensure nil
   :config
