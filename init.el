@@ -59,7 +59,7 @@ See `unwind-protect' for more details regarding safe code evaluation."
            (progn
              (advice-add ,sym ,how ,func ,props)
              ,@body)
-           (advice-remove ,sym ,func)))))
+         (advice-remove ,sym ,func)))))
 
 (defun my-highlight-dwim ()
   (interactive)
@@ -548,10 +548,10 @@ and Emacs states.")
    (lambda ()
      (when-let (root (consult--project-root))
        (my-with-advice 'buffer-local-value
-                       :around #'buffer-local-value-with-project-dir-override nil
-                       (consult--buffer-query :sort 'visibility
-                                              :directory root
-                                              :as #'consult--buffer-pair)))))
+           :around #'buffer-local-value-with-project-dir-override nil
+         (consult--buffer-query :sort 'visibility
+                                :directory root
+                                :as #'consult--buffer-pair)))))
   (defalias 'my-consult-line-thing-at-point #'consult-line)
   (consult-customize
    my-consult-line-thing-at-point
