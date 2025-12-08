@@ -44,10 +44,6 @@ autoloads/loaddefs, etc.")
 
 (defun my-etc (name)
   (expand-file-name name my-etc-dir))
-
-(defun my-prog-mode-whitespace-style ()
-  (setq-local whitespace-style
-              '(face tabs tab-mark trailing lines missing-newline-at-eof)))
 ;;;; Key Bindings
 (defvar my-leader-key "SPC"
   "The leader prefix key.")
@@ -264,7 +260,10 @@ autoloads/loaddefs, etc.")
 (global-display-line-numbers-mode 1)
 
 (setq whitespace-style '(face tabs tab-mark trailing missing-newline-at-eof))
-(add-hook 'prog-mode-hook #'my-prog-mode-whitespace-style)
+(defun my--prog-mode-whitespace-style ()
+  (setq-local whitespace-style
+              '(face tabs tab-mark trailing lines missing-newline-at-eof)))
+(add-hook 'prog-mode-hook #'my--prog-mode-whitespace-style)
 (setq whitespace-line-column nil)
 (global-whitespace-mode 1)
 
