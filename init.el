@@ -205,7 +205,14 @@ Ideally, it should be reported to Emacs developers."
   "r" `("register" . ,my-register-map)
   "s" `("search" . ,my-search-map)
   "t" `("toggle" . ,my-toggle-map)
+  "u" #'universal-argument
   "w" `("window" . ,my-window-map))
+
+(keymap-set universal-argument-map (concat my-leader-key " u")
+            #'universal-argument-more)
+(keymap-set universal-argument-map (concat my-leader-alt-key " u")
+            #'universal-argument-more)
+(keymap-set minibuffer-local-map my-leader-alt-key my-leader-map)
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
