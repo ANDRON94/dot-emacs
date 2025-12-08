@@ -616,6 +616,11 @@ and Emacs states.")
   :ensure nil
   :config
   (setq outline-minor-mode-cycle t))
+
+(use-package org
+  :ensure nil
+  :config
+  (setq org-link-file-path-type 'relative))
 ;;; Project
 (defun my--set-project-current-directory-override ()
   (setq-local project-current-directory-override default-directory))
