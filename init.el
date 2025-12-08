@@ -631,6 +631,11 @@ and Emacs states.")
   (advice-add 'project-eshell :after #'my--set-project-current-directory-override)
   (setq project-switch-commands 'project-find-file)
   (setq project-mode-line t))
+;;; Tramp
+(use-package tramp
+  :ensure nil
+  :config
+  (setq tramp-persistency-file-name (my-var "tramp/connection-history.el")))
 ;;; Footer
 ;; Local Variables:
 ;; eval: (outline-minor-mode 1)
