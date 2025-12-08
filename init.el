@@ -162,7 +162,8 @@ and Emacs states.")
   "f" #'project-find-file
   "k" #'project-kill-buffers
   "o" #'find-sibling-file
-  "p" #'project-switch-project)
+  "p" #'project-switch-project
+  "x" #'project-eshell)
 
 (defvar-keymap my-register-map
   :doc "Keymap for operations on registers: create, jump, etc."
@@ -240,6 +241,10 @@ and Emacs states.")
 (defvar-keymap my-dired-mode-map
   :doc "Keymap for user-defined key bindings inside dired mode."
   "t" #'dired-follow-subdir-mode)
+
+(defvar-keymap my-eshell-mode-map
+  :doc "Keymap for user-defined key bindings inside eshell mode."
+  "r" #'consult-history)
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
@@ -321,7 +326,8 @@ and Emacs states.")
     (kbd my-leader-alt-key) my-leader-map)
   ;; Localleader
   (my--evil-define-localleaders
-    (dired-mode-map . my-dired-mode-map))
+    (dired-mode-map . my-dired-mode-map)
+    (eshell-mode-map . my-eshell-mode-map))
   ;; Rest
   (evil-define-key my--leader-key-states 'global
     (kbd "g D") #'xref-find-references
@@ -335,7 +341,7 @@ and Emacs states.")
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(dired elpaca ibuffer magit outline replace xref)))
+  (evil-collection-init '(dired elpaca eshell ibuffer magit outline replace xref)))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -552,6 +558,16 @@ and Emacs states.")
   :load-path my-lisp-dir
   :ensure nil
   :after dired)
+;;; Eshell
+(use-package eshell
+  :ensure nil
+  :config
+  (setq eshell-directory-name (my-var "eshell/"))
+  (setq eshell-scroll-to-bottom-on-input 'all)
+  (setq eshell-kill-processes-on-exit t)
+  (setq eshell-hist-ignoredups t)
+  (setq eshell-glob-case-insensitive t)
+  (setq eshell-error-if-no-glob t))
 ;;; Project
 (defun my--set-project-current-directory-override ()
   (setq-local project-current-directory-override default-directory))
