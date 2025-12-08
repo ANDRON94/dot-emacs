@@ -594,6 +594,25 @@ and Emacs states.")
   (setq eshell-hist-ignoredups t)
   (setq eshell-glob-case-insensitive t)
   (setq eshell-error-if-no-glob t))
+;;; Git
+(use-package diff-hl
+  :ensure t
+  :config
+  (global-diff-hl-mode 1))
+
+(use-package magit
+  :ensure t
+  :after transient
+  :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+  :bind (:map magit-mode-map
+              ("SPC" . nil)
+              :map magit-diff-mode-map
+              ("SPC" . nil)))
+;;; Organizer
+(use-package outline
+  :ensure nil
+  :config
+  (setq outline-minor-mode-cycle t))
 ;;; Project
 (defun my--set-project-current-directory-override ()
   (setq-local project-current-directory-override default-directory))
@@ -612,25 +631,6 @@ and Emacs states.")
   (advice-add 'project-eshell :after #'my--set-project-current-directory-override)
   (setq project-switch-commands 'project-find-file)
   (setq project-mode-line t))
-;;; Organizer
-(use-package outline
-  :ensure nil
-  :config
-  (setq outline-minor-mode-cycle t))
-;;; Git
-(use-package diff-hl
-  :ensure t
-  :config
-  (global-diff-hl-mode 1))
-
-(use-package magit
-  :ensure t
-  :after transient
-  :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-  :bind (:map magit-mode-map
-              ("SPC" . nil)
-              :map magit-diff-mode-map
-              ("SPC" . nil)))
 ;;; Footer
 ;; Local Variables:
 ;; eval: (outline-minor-mode 1)
