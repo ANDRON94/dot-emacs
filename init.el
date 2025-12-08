@@ -112,6 +112,11 @@ and Emacs states.")
   "p" #'previous-buffer
   "r" #'revert-buffer)
 
+(defvar-keymap my-code-map
+  :doc "Keymap for operations on code: compilation, evaluation, etc."
+  "C" #'recompile
+  "c" #'compile)
+
 (defvar-keymap my-file-map
   :doc "Keymap for operations on files: open file, open directory, open recently closed file, etc."
   "d" #'dired
@@ -231,6 +236,7 @@ and Emacs states.")
   "<" #'consult-buffer
   "RET" #'consult-bookmark
   "b" `("buffer" . ,my-buffer-map)
+  "c" `("code" . ,my-code-map)
   "f" `("file" . ,my-file-map)
   "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
