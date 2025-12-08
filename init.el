@@ -61,6 +61,16 @@ See `unwind-protect' for more details regarding safe code evaluation."
              ,@body)
            (advice-remove ,sym ,func)))))
 
+(defun my-highlight-dwim ()
+  (interactive)
+  (require 'hi-lock)
+  (let* ((regexp (hi-lock-regexp-okay (find-tag-default-as-symbol-regexp)))
+         (already-highlighted (or (assoc regexp hi-lock-interactive-patterns)
+                                  (assoc regexp hi-lock-interactive-lighters))))
+    (if already-highlighted
+        (unhighlight-regexp regexp)
+      (highlight-symbol-at-point))))
+
 (defun buffer-local-value-with-project-dir-override (oldfun variable buffer)
   "FIXME: Make functions respect `project-current-directory-override'.
 
@@ -129,6 +139,11 @@ Ideally, it should be reported to Emacs developers."
   :doc "Keymap for inserting things into buffer."
   "y" #'yank-from-kill-ring
   "r" #'consult-register)
+
+(defvar-keymap my-personal-map
+  :doc "Keymap for uncategorized either useful features or used often features."
+  "h" #'my-highlight-dwim
+  "s" #'sort-lines)
 
 (defvar-keymap my-project-map
   :doc "Keymap for operations on projects: switch, open buffer, open file, etc."
@@ -201,6 +216,7 @@ Ideally, it should be reported to Emacs developers."
   "g" `("git" . ,my-git-map)
   "h" `("help" . ,my-help-map)
   "i" `("insert" . ,my-insert-map)
+  "j" `("personal" . ,my-personal-map)
   "p" `("project" . ,my-project-map)
   "r" `("register" . ,my-register-map)
   "s" `("search" . ,my-search-map)
