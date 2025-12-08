@@ -92,6 +92,13 @@ Ideally, it should be reported to Emacs developers."
 (defvar my-leader-alt-key "M-SPC"
   "An alternative leader prefix key, used for Insert and Emacs states.")
 
+(defvar my-localleader-key "SPC m"
+  "The localleader prefix key, for major-mode specific commands.")
+
+(defvar my-localleader-alt-key "M-SPC m"
+  "The localleader prefix key, for major-mode specific commands. Used for Insert
+and Emacs states.")
+
 (defvar my--leader-key-states '(normal visual motion))
 
 (defvar my--leader-alt-key-states '(emacs insert))
@@ -229,6 +236,10 @@ Ideally, it should be reported to Emacs developers."
 (keymap-set universal-argument-map (concat my-leader-alt-key " u")
             #'universal-argument-more)
 (keymap-set minibuffer-local-map my-leader-alt-key my-leader-map)
+;;;;; Major Modes
+(defvar-keymap my-dired-mode-map
+  :doc "Keymap for user-defined key bindings inside dired mode."
+  "t" #'dired-follow-subdir-mode)
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
@@ -281,6 +292,18 @@ Ideally, it should be reported to Emacs developers."
 (defvar my--evil-mode-line-tag-placeholder ""
   "No-op variable just to place `evil-mode-line-tag' in the mode line.")
 
+(defun my--evil-define-localleader (major-to-localleader-pair)
+  (let ((major-keymap (car major-to-localleader-pair))
+        (localleader-keymap (cdr major-to-localleader-pair)))
+    `((evil-define-key my--leader-key-states ,major-keymap
+        (kbd my-localleader-key) (cons "<localleader>" ,localleader-keymap))
+      (evil-define-key my--leader-alt-key-states ,major-keymap
+        (kbd my-localleader-alt-key) (cons "<localleader>" ,localleader-keymap)))))
+
+(defmacro my--evil-define-localleaders (&rest localleader-keymap-alist)
+  (declare (indent 0) (debug t))
+  `(progn ,@(mapcan #'my--evil-define-localleader localleader-keymap-alist)))
+
 (use-package evil
   :ensure t
   :init
@@ -296,6 +319,9 @@ Ideally, it should be reported to Emacs developers."
     (kbd my-leader-key) my-leader-map)
   (evil-define-key my--leader-alt-key-states 'global
     (kbd my-leader-alt-key) my-leader-map)
+  ;; Localleader
+  (my--evil-define-localleaders
+    (dired-mode-map . my-dired-mode-map))
   ;; Rest
   (evil-define-key my--leader-key-states 'global
     (kbd "g D") #'xref-find-references
@@ -520,6 +546,11 @@ Ideally, it should be reported to Emacs developers."
   :config
   (setq dired-listing-switches "-alh")
   (put 'dired-find-alternate-file 'disabled nil))
+
+(use-package dired-follow-subdir
+  :load-path my-lisp-dir
+  :ensure nil
+  :after dired)
 ;;; Project
 (defun my--set-project-current-directory-override ()
   (setq-local project-current-directory-override default-directory))
