@@ -271,9 +271,31 @@ autoloads/loaddefs, etc.")
 
 (put 'narrow-to-region 'disabled nil)
 
+(defun my--corfu-mode-completion-styles ()
+  (setq-local completion-styles '(orderless-fast basic))
+  (setq-local completion-category-overrides nil)
+  (setq-local completion-category-defaults nil))
+
+(use-package corfu
+  :ensure t
+  :hook ((corfu-mode-hook . my--corfu-mode-completion-styles)
+         (prog-mode-hook . corfu-mode)
+         (text-mode-hook . corfu-mode))
+  :bind (:map corfu-map
+              ("C-SPC" . corfu-insert-separator))
+  :init
+  (setq corfu-auto t))
+
+(defun orderless-fast-dispatch (word index total)
+  (and (= index 0) (= total 1) (length< word 4)
+       (cons 'orderless-literal-prefix word)))
+
 (use-package orderless
   :ensure t
   :config
+  (orderless-define-completion-style orderless-fast
+    (orderless-style-dispatchers '(orderless-fast-dispatch))
+    (orderless-matching-styles '(orderless-literal orderless-regexp)))
   (setq completion-styles '(orderless basic))
   (setq completion-category-overrides
         '((file (styles basic orderless partial-completion)))))
