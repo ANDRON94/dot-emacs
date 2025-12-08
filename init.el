@@ -325,6 +325,7 @@ and Emacs states.")
   ;; Rest
   (evil-define-key my--leader-key-states 'global
     (kbd "g D") #'xref-find-references
+    (kbd "g c") #'comment-dwim
     (kbd "s") #'evil-avy-goto-char-2
     (kbd "z N") #'widen
     (kbd "z n") #'narrow-to-region))
