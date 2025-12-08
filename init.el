@@ -335,7 +335,7 @@ and Emacs states.")
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(dired elpaca ibuffer magit outline xref)))
+  (evil-collection-init '(dired elpaca ibuffer magit outline replace xref)))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
