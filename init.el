@@ -147,6 +147,17 @@ and Emacs states.")
   "y" #'yank-from-kill-ring
   "r" #'consult-register)
 
+(defvar-keymap my-open-llm-map
+  :doc "Keymap for interaction with LLMs."
+  "l" #'gptel
+  "m" #'gptel-menu
+  "r" #'gptel-rewrite
+  "s" #'gptel-send)
+
+(defvar-keymap my-open-map
+  :doc "Keymap for opening things: external applications, tools, etc."
+  "l" `("llm" . ,my-open-llm-map))
+
 (defvar-keymap my-personal-map
   :doc "Keymap for uncategorized either useful features or used often features."
   "h" #'my-highlight-dwim
@@ -225,6 +236,7 @@ and Emacs states.")
   "h" `("help" . ,my-help-map)
   "i" `("insert" . ,my-insert-map)
   "j" `("personal" . ,my-personal-map)
+  "o" `("open" . ,my-open-map)
   "p" `("project" . ,my-project-map)
   "r" `("register" . ,my-register-map)
   "s" `("search" . ,my-search-map)
@@ -608,6 +620,15 @@ and Emacs states.")
               ("SPC" . nil)
               :map magit-diff-mode-map
               ("SPC" . nil)))
+;;; LLM
+(use-package gptel
+  :ensure t
+  :config
+  (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
+  (gptel-make-gemini "Gemini" :stream t :key gptel-api-key)
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-expert-commands t)
+  (setq gptel-org-branching-context t))
 ;;; Organizer
 (use-package htmlize
   :ensure t)
