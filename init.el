@@ -609,6 +609,9 @@ and Emacs states.")
               :map magit-diff-mode-map
               ("SPC" . nil)))
 ;;; Organizer
+(use-package htmlize
+  :ensure t)
+
 (use-package outline
   :ensure nil
   :config
