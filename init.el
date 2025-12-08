@@ -242,9 +242,33 @@ and Emacs states.")
   :doc "Keymap for user-defined key bindings inside dired mode."
   "t" #'dired-follow-subdir-mode)
 
+(defvar-keymap my-emacs-lisp-mode-eval-map
+  :doc "Keymap for elisp code evaluation."
+  "b" #'eval-buffer
+  "d" #'eval-defun
+  "e" #'eval-last-sexp
+  "l" #'load-library
+  "r" #'eval-region)
+
+(defvar-keymap my-emacs-lisp-mode-goto-map
+  :doc "Keymap for elisp code navigation."
+  "f" #'find-function
+  "l" #'find-library
+  "v" #'find-variable)
+
+(defvar-keymap my-emacs-lisp-mode-map
+  :doc "Keymap for user-defined key bindings inside emacs mode."
+  "e" `("eval" . ,my-emacs-lisp-mode-eval-map)
+  "g" `("goto" . ,my-emacs-lisp-mode-goto-map)
+  "m" #'pp-macroexpand-last-sexp)
+
 (defvar-keymap my-eshell-mode-map
   :doc "Keymap for user-defined key bindings inside eshell mode."
   "r" #'consult-history)
+
+(defvar-keymap my-lisp-interaction-mode-map
+  :doc "Keymap for user-defined key bindings inside lisp interaction mode."
+  :keymap my-emacs-lisp-mode-map)
 ;;; Elpaca
 (defvar elpaca-installer-version 0.11)
 
@@ -327,7 +351,9 @@ and Emacs states.")
   ;; Localleader
   (my--evil-define-localleaders
     (dired-mode-map . my-dired-mode-map)
-    (eshell-mode-map . my-eshell-mode-map))
+    (emacs-lisp-mode-map . my-emacs-lisp-mode-map)
+    (eshell-mode-map . my-eshell-mode-map)
+    (lisp-interaction-mode-map . my-lisp-interaction-mode-map))
   ;; Rest
   (evil-define-key my--leader-key-states 'global
     (kbd "g D") #'xref-find-references
