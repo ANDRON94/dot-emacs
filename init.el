@@ -285,7 +285,7 @@ Ideally, it should be reported to Emacs developers."
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(elpaca ibuffer magit outline xref)))
+  (evil-collection-init '(dired elpaca ibuffer magit outline xref)))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -488,6 +488,15 @@ Ideally, it should be reported to Emacs developers."
   (setq recentf-save-file (my-var "recentf/history.el"))
   (add-to-list 'recentf-filename-handlers #'substring-no-properties)
   (add-hook 'kill-emacs-hook #'recentf-cleanup))
+;;; Dired
+(use-package dired
+  :ensure nil
+  :init
+  (setq dired-dwim-target t)
+  (setq dired-create-destination-dirs 'ask)
+  :config
+  (setq dired-listing-switches "-alh")
+  (put 'dired-find-alternate-file 'disabled nil))
 ;;; Project
 (defun my--set-project-current-directory-override ()
   (setq-local project-current-directory-override default-directory))
