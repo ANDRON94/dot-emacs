@@ -387,6 +387,9 @@ and Emacs states.")
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
   (evil-collection-init '(diff-mode dired elpaca eshell ibuffer magit outline replace
                                     xref)))
+;;; No Littering
+(make-directory (my-var "ielm/") t)
+(setq ielm-history-file-name (my-var "ielm/history.eld"))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
