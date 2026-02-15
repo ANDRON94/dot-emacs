@@ -677,10 +677,30 @@ and Emacs states.")
   (setq project-switch-commands 'project-find-file)
   (setq project-mode-line t))
 ;;; Tramp
+(setq remote-file-name-inhibit-auto-save-visited t)
+(setq remote-file-name-inhibit-locks t)
+
+(connection-local-set-profile-variables
+ 'remote-direct-async-process
+ '((tramp-direct-async-process . t)))
+
+(connection-local-set-profiles
+ '(:application tramp :protocol "ssh")
+ 'remote-direct-async-process)
+
 (use-package tramp
   :ensure nil
   :config
-  (setq tramp-persistency-file-name (my-var "tramp/connection-history.el")))
+  (setq tramp-persistency-file-name (my-var "tramp/connection-history.el"))
+  (setq tramp-use-scp-direct-remote-copying t)
+  (setq tramp-use-connection-share nil)
+  (setq tramp-ssh-controlmaster-options
+        (concat
+         "-o ControlPath=/tmp/ssh-ControlPath-%%r@%%h:%%p "
+         "-o ControlMaster=auto -o ControlPersist=yes"))
+  (with-eval-after-load 'compile
+    (remove-hook 'compilation-mode-hook
+                 #'tramp-compile-disable-ssh-controlmaster-options)))
 ;;; Footer
 ;; Local Variables:
 ;; eval: (outline-minor-mode 1)
