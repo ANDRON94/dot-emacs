@@ -530,6 +530,9 @@ and Emacs states.")
 (setq-default fill-column 88)
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil)
+
+(use-package eglot
+  :ensure nil)
 ;;; Navigation
 (use-package avy
   :ensure t
