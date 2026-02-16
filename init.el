@@ -561,7 +561,7 @@ and Emacs states.")
   :ensure t
   :config
   (consult-customize
-   consult--source-project-buffer
+   consult-source-project-buffer
    :items
    (lambda ()
      (when-let (root (consult--project-root))
