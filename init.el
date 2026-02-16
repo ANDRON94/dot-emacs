@@ -423,6 +423,12 @@ and Emacs states.")
 (global-whitespace-mode 1)
 
 (global-hl-line-mode 1)
+(defun my--prog-mode-add-keywords ()
+  (font-lock-add-keywords nil
+                          '(("\\<\\(FIXME\\):" 1 'error prepend)
+                            ("\\<\\(TODO\\):" 1 'warning prepend)
+                            ("\\<\\(NOTE\\):" 1 'success prepend))))
+(add-hook 'prog-mode-hook #'my--prog-mode-add-keywords)
 
 (put 'narrow-to-region 'disabled nil)
 
