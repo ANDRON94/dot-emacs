@@ -385,8 +385,14 @@ and Emacs states.")
   :after evil
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
-  (evil-collection-init '(diff-mode dired elpaca eshell ibuffer magit outline replace
-                                    xref)))
+  (evil-collection-init '(compile
+                          debug diff-mode dired
+                          elpaca eshell
+                          ibuffer
+                          magit
+                          outline
+                          replace
+                          xref)))
 ;;; No Littering
 (make-directory (my-var "ielm/") t)
 (setq ielm-history-file-name (my-var "ielm/history.eld"))
