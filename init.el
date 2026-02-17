@@ -565,6 +565,14 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
 
 (use-package eglot
   :ensure nil)
+
+(use-package yasnippet
+  :ensure t
+  :hook (change-log-mode-hook . yas-minor-mode)
+  :config
+  (let ((snippets-dir (my-etc "yasnippet/snippets/")))
+    (make-directory snippets-dir t)
+    (setq yas-snippet-dirs (list snippets-dir))))
 ;;; Navigation
 (use-package avy
   :ensure t
