@@ -715,7 +715,9 @@ and Emacs states.")
          "-o ControlMaster=auto -o ControlPersist=yes"))
   (with-eval-after-load 'compile
     (remove-hook 'compilation-mode-hook
-                 #'tramp-compile-disable-ssh-controlmaster-options)))
+                 #'tramp-compile-disable-ssh-controlmaster-options))
+  (setq vc-ignore-dir-regexp
+        (format "\\(%s\\)\\|\\(%s\\)" vc-ignore-dir-regexp tramp-file-name-regexp)))
 ;;; Footer
 ;; Local Variables:
 ;; eval: (outline-minor-mode 1)
