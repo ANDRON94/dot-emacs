@@ -387,7 +387,7 @@ and Emacs states.")
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
   (evil-collection-init '(compile
                           debug diff-mode dired
-                          elpaca eshell
+                          ediff elpaca eshell
                           ibuffer
                           magit
                           outline
@@ -552,6 +552,15 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
 (setq-default fill-column 88)
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil)
+
+(defun my--disable-ediff-mode-map-spc-keybinding ()
+  (define-key ediff-mode-map (kbd "SPC") nil))
+
+(use-package ediff
+  :ensure nil
+  :hook (ediff-keymap-setup-hook . my--disable-ediff-mode-map-spc-keybinding)
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package eglot
   :ensure nil)
