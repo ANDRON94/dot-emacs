@@ -115,7 +115,8 @@ and Emacs states.")
 (defvar-keymap my-code-map
   :doc "Keymap for operations on code: compilation, evaluation, etc."
   "C" #'recompile
-  "c" #'compile)
+  "c" #'compile
+  "f" #'eglot-format-buffer)
 
 (defvar-keymap my-file-map
   :doc "Keymap for operations on files: open file, open directory, open recently closed file, etc."
