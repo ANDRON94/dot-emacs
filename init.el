@@ -525,6 +525,16 @@ and Emacs states.")
 
 (setq column-number-mode t)
 
+(defvar-local my--cache-project-mode-line-format (cons nil nil))
+
+(define-advice project-mode-line-format (:around (oldfun) my--cache)
+  "Cache `project-mode-line-format' result after first call.
+
+Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
+  (unless (car my--cache-project-mode-line-format)
+    (setq my--cache-project-mode-line-format (cons t (funcall oldfun))))
+  (cdr my--cache-project-mode-line-format))
+
 (setq-default mode-line-format
               '(;; Errors
                 "%e "
