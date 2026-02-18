@@ -206,6 +206,7 @@ and Emacs states.")
 (defvar-keymap my-toggle-map
   :doc "Keymap for toggling things on and off."
   "c" #'global-display-fill-column-indicator-mode
+  "h" #'eglot-inlay-hints-mode
   "r" #'read-only-mode
   "w" #'visual-line-mode)
 
