@@ -686,6 +686,9 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   :config
   (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
   (gptel-make-gemini "Gemini" :stream t :key gptel-api-key)
+  (gptel-make-gh-copilot "Copilot")
+  (setq gptel-gh-github-token-file (my-var "gptel/copilot-chat/github-token"))
+  (setq gptel-gh-token-file (my-var "gptel/copilot-chat/token"))
   (setq gptel-default-mode 'org-mode)
   (setq gptel-expert-commands t)
   (setq gptel-org-branching-context t))
