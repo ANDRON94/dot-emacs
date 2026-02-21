@@ -682,6 +682,17 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
               :map magit-diff-mode-map
               ("SPC" . nil)))
 ;;; LLM
+(use-package track-changes
+  :ensure t)
+
+(use-package copilot
+  :ensure t
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion))
+  :config
+  (setq copilot-install-dir (my-var "copilot/")))
+
 (use-package gptel
   :ensure t
   :config
