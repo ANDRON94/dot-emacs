@@ -574,7 +574,7 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   :config
   (let ((snippets-dir (my-etc "yasnippet/snippets/")))
     (make-directory snippets-dir t)
-    (setq yas-snippet-dirs (list snippets-dir))))
+    (setopt yas-snippet-dirs (list snippets-dir))))
 ;;; Navigation
 (use-package avy
   :ensure t
