@@ -716,6 +716,7 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
 (use-package org
   :ensure nil
   :config
+  (setq org-publish-timestamp-directory (my-var "org/org-publish/org-timestamps/"))
   (setq org-link-file-path-type 'relative))
 ;;; Project
 (defun my--set-project-current-directory-override ()
