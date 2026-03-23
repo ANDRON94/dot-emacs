@@ -420,7 +420,7 @@ and Emacs states.")
 (setq whitespace-style '(face tabs tab-mark trailing missing-newline-at-eof))
 (defun my--prog-mode-whitespace-style ()
   (setq-local whitespace-style
-              '(face tabs tab-mark trailing lines missing-newline-at-eof)))
+              '(face tabs tab-mark trailing lines-char missing-newline-at-eof)))
 (add-hook 'prog-mode-hook #'my--prog-mode-whitespace-style)
 (setq whitespace-line-column nil)
 (global-whitespace-mode 1)
