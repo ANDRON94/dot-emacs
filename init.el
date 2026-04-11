@@ -392,6 +392,7 @@ and Emacs states.")
                           debug diff-mode dired
                           ediff elpaca eshell
                           ibuffer
+                          info
                           magit
                           outline
                           replace
