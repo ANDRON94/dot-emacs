@@ -400,7 +400,9 @@ and Emacs states.")
 ;;; No Littering
 (make-directory (my-var "ielm/") t)
 (setq ielm-history-file-name (my-var "ielm/history.eld"))
+(setq url-configuration-directory (my-var "url/"))
 (setq url-cookie-file (my-var "url/cookies"))
+(setq url-history-file (my-var "url/history"))
 ;;; UI/UX
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
