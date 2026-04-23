@@ -451,6 +451,10 @@ and Emacs states.")
   :init
   (setq corfu-auto t))
 
+(use-package embark
+  :ensure t
+  :bind (("C-;" . embark-act)))
+
 (defun orderless-fast-dispatch (word index total)
   (and (= index 0) (= total 1) (length< word 4)
        (cons 'orderless-literal-prefix word)))
@@ -626,6 +630,10 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   (consult-customize
    my-consult-ripgrep-thing-at-point
    :initial (thing-at-point 'symbol)))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
 
 (use-package dumb-jump
   :ensure t
