@@ -719,14 +719,23 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
 (use-package gptel
   :ensure t
   :config
-  (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)
-  (gptel-make-gemini "Gemini" :stream t :key gptel-api-key)
+  (setq gptel-backend (gptel-make-gemini "Gemini" :stream t :key gptel-api-key))
+  (setq gptel-model 'gemini-3-flash-preview)
   (gptel-make-gh-copilot "Copilot")
   (setq gptel-gh-github-token-file (my-var "gptel/copilot-chat/github-token"))
   (setq gptel-gh-token-file (my-var "gptel/copilot-chat/token"))
   (setq gptel-default-mode 'org-mode)
   (setq gptel-expert-commands t)
-  (setq gptel-org-branching-context t))
+  (setq gptel-org-branching-context t)
+  (gptel-make-preset 'default
+    :backend "Gemini"
+    :model gptel-model)
+  (gptel-make-preset 'work
+    :backend "Copilot"
+    :model 'gpt-4.1)
+  (gptel-make-preset 'work-hard
+    :backend "Copilot"
+    :model 'claude-opus-4.6))
 
 (use-package gptel-agent
   :ensure t
