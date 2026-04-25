@@ -727,6 +727,12 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   (setq gptel-default-mode 'org-mode)
   (setq gptel-expert-commands t)
   (setq gptel-org-branching-context t))
+
+(use-package gptel-agent
+  :ensure t
+  :after gptel
+  :config
+  (gptel-agent-update))
 ;;; Organizer
 (use-package htmlize
   :ensure t)
