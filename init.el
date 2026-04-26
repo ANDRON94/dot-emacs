@@ -722,6 +722,7 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
 
 (use-package gptel
   :ensure t
+  :hook (gptel-mode-hook . gptel-highlight-mode)
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini" :stream t :key gptel-api-key))
   (setq gptel-model 'gemini-3-flash-preview)
@@ -731,6 +732,7 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   (setq gptel-default-mode 'org-mode)
   (setq gptel-expert-commands t)
   (setq gptel-org-branching-context t)
+  (setq gptel-highlight-methods '(face))
   (gptel-make-preset 'default
     :backend "Gemini"
     :model gptel-model)
