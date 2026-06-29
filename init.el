@@ -602,6 +602,13 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
     (make-directory snippets-dir t)
     (setopt yas-snippet-dirs (list snippets-dir))))
 ;;; Navigation
+(setq find-sibling-rules '(("\\([^/]+\\)\\.h\\'" "\\1.c" "\\1.cc" "\\1.cpp" "\\1.tpp")
+                           ("\\([^/]+\\)\\.hpp\\'" "\\1.cpp" "\\1.tpp")
+                           ("\\([^/]+\\)\\.c\\'" "\\1.h")
+                           ("\\([^/]+\\)\\.cc\\'" "\\1.h")
+                           ("\\([^/]+\\)\\.cpp\\'" "\\1.h" "\\1.hpp")
+                           ("\\([^/]+\\)\\.tpp\\'" "\\1.h" "\\1.hpp")))
+
 (use-package avy
   :ensure t
   :config
