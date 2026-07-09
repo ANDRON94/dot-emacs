@@ -609,11 +609,31 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
                            ("\\([^/]+\\)\\.cpp\\'" "\\1.h" "\\1.hpp")
                            ("\\([^/]+\\)\\.tpp\\'" "\\1.h" "\\1.hpp")))
 
+(defun my--avyact-evil-paste-after (pt)
+  (avy-action-copy pt)
+  (call-interactively #'evil-paste-after))
+
+(defun my--avyact-evil-paste-before (pt)
+  (avy-action-copy pt)
+  (call-interactively #'evil-paste-before))
+
+(defun my--avyact-embark-act (pt)
+  (unwind-protect
+      (save-excursion
+        (goto-char pt)
+        (embark-act))
+    (select-window (cdr (ring-ref avy-ring 0)))))
+
 (use-package avy
   :ensure t
   :config
   (setq avy-background t)
-  (setq avy-single-candidate-jump nil))
+  (setq avy-single-candidate-jump nil)
+  (setq avy-dispatch-alist '((?\; . my--avyact-embark-act)
+                             (?y . avy-action-copy)
+                             (?p . my--avyact-evil-paste-after)
+                             (?P . my--avyact-evil-paste-before)
+                             (?t . avy-action-teleport))))
 
 (use-package bookmark
   :ensure nil
