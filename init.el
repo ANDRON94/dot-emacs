@@ -624,16 +624,25 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
         (embark-act))
     (select-window (cdr (ring-ref avy-ring 0)))))
 
+(defun my--avyact-evil (pt)
+  (unwind-protect
+      (save-excursion
+        (goto-char pt)
+        (when-let* ((cmd (key-binding (read-key-sequence nil))))
+          (call-interactively cmd)))
+    (select-window (cdr (ring-ref avy-ring 0)))))
+
 (use-package avy
   :ensure t
   :config
   (setq avy-background t)
   (setq avy-single-candidate-jump nil)
-  (setq avy-dispatch-alist '((?\; . my--avyact-embark-act)
-                             (?y . avy-action-copy)
+  (setq avy-dispatch-alist '((?P . my--avyact-evil-paste-before)
+                             (?\; . my--avyact-embark-act)
+                             (?e . my--avyact-evil)
                              (?p . my--avyact-evil-paste-after)
-                             (?P . my--avyact-evil-paste-before)
-                             (?t . avy-action-teleport))))
+                             (?t . avy-action-teleport)
+                             (?y . avy-action-copy))))
 
 (use-package bookmark
   :ensure nil
