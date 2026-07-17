@@ -389,6 +389,7 @@ and Emacs states.")
   :config
   (setq evil-collection-key-blacklist `(,my-leader-key ,my-leader-alt-key))
   (evil-collection-init '(compile
+                          corfu
                           debug diff-mode dired
                           ediff elpaca eshell
                           ibuffer
@@ -445,6 +446,17 @@ and Emacs states.")
   (setq-local completion-category-overrides nil)
   (setq-local completion-category-defaults nil))
 
+(setq tab-always-indent 'complete)
+(setq c-tab-always-indent 'complete)
+
+(defun my--complete-symbol (&optional arg region)
+  (ignore arg region)
+  (complete-symbol nil))
+
+(advice-add 'c-indent-line-or-region :after #'my--complete-symbol)
+
+(setopt text-mode-ispell-word-completion nil)
+
 (use-package corfu
   :ensure t
   :hook ((corfu-mode-hook . my--corfu-mode-completion-styles)
@@ -453,7 +465,14 @@ and Emacs states.")
   :bind (:map corfu-map
               ("C-SPC" . corfu-insert-separator))
   :init
-  (setq corfu-auto t))
+  (setq corfu-auto t)
+  (setq corfu-cycle t))
+
+(use-package cape
+  :ensure t
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
 
 (use-package embark
   :ensure t
@@ -789,9 +808,7 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   :ensure t)
 
 (use-package outline
-  :ensure nil
-  :config
-  (setq outline-minor-mode-cycle t))
+  :ensure nil)
 
 (use-package org
   :ensure nil
