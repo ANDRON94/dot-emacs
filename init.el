@@ -493,7 +493,6 @@ and Emacs states.")
         '((file (styles basic orderless partial-completion)))))
 
 (use-package transient
-  :ensure t
   :init
   (setq transient-history-file (my-var "transient/history.el"))
   (setq transient-levels-file (my-var "transient/levels.el"))
@@ -592,23 +591,6 @@ Cache is stored in buffer-local variable `my--cache-project-mode-line-format'."
   :hook (ediff-keymap-setup-hook . my--disable-ediff-mode-map-spc-keybinding)
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
-;; FIXME: `copilot' package depends on `track-changes' version "1.4"
-;; but built-in (Emacs 30.1) version is "1.2".
-;; In order to use `copilot' we need to download a newer
-;; version of `track-changes' externally using `elpaca'.
-;; *But* `eglot' package depends on `track-changes' too
-;; and because it's defined *before* `copilot' it will be loaded
-;; *first* which in turn will load (built-in) `track-changes'.
-;; To prevent next warning from appearing during Emacs startup:
-;; > track-changes loaded before `elpaca' activation
-;; we need to define `track-changes' *before* `eglot'
-;; *and also* force `elpaca' to load all packages from the queue
-;; up to this point (including). This is needed because `elpaca'
-;; works asynchronously and `eglot' (currently) uses built-in version
-;; (which means `eglot' will load right away cause it's not in `elpaca' queue).
-(use-package track-changes
-  :ensure (:wait t))
 
 (use-package eglot
   :ensure nil)
